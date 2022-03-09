@@ -2,6 +2,14 @@
 <h1>Processing page</h1>
 {% for order in orders %}
 <h2>Order Number: {{order.id}}</h2>
+<form method="POST" action="/confirm">
+    <input
+        name="Complete_Order"
+        class="btn btn-success"
+        type="submit"
+        value="{{ order.id}}"
+    />
+</form>
 {% for item in order.items %}
 <h3>{{ item.text }}</h3>
 {% endfor %} {% endfor %} {% endblock %}

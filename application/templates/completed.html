@@ -1,3 +1,7 @@
 {% extends "layout.html" %} {% block content %}
-<h1>Completed Orders</h1>
-{% endblock %}
+<h2>Complete Orders</h2>
+<hr />
+<br />
+{% for order in complete_orders %}
+<h3>{{order.id}}</h3>
+{% endfor %} {% endblock %}

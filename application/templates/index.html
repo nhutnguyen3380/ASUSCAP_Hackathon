@@ -1,6 +1,5 @@
-{% extends "layout.html" %} {% block content %} {% for user in users %}
-<h2 class="card shadow">{{ user.phonenumber }}</h2>
-{% endfor %}
+{% extends "layout.html" %} {% block content %}
+<h2 class="text-">Create An Order</h2>
 <form method="POST" action="/create">
     <div class="form-group">
         <label for="username">Customer Name</label>
@@ -12,9 +11,6 @@
             aria-describedby="helpId"
             placeholder="customer name"
         />
-        <small id="helpId" class="form-text text-muted"
-            >enter customer name</small
-        >
     </div>
     <button type="submit">Submit</button>
 </form>
