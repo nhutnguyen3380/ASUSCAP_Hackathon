@@ -30,6 +30,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     items = db.relationship('Item', backref="order", lazy=True)
+    iscomplete = db.Column(db.Boolean, default=False)
 
 
 class Item(db.Model):

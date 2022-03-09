@@ -10,11 +10,12 @@ def init_app():
     """Construct the core application."""
     app = Flask(__name__, instance_relative_config=False)
     app.config['SECRET_KEY'] = 'CHANGE_FOR_PRODUCTION'
-    #config app (DATABASE)
     
+    #config app (DATABASE)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = False
+    app.config['SQLALCHEMY_ECHO'] = True # Shows corresponding SQL queries
+
 
     # initialize app with the current database
     db.app = app
@@ -22,7 +23,7 @@ def init_app():
     migrate.init_app(app, db)
     
 
-    # register routes
+    # register routes (add enpoints / pages to the application)
     app.register_blueprint(routes)
 
     with app.app_context():

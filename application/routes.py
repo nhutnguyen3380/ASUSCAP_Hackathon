@@ -21,10 +21,10 @@ def creating_order():
     return "<p>create order</p>"
 
 def order_processing():
-    return "<h1>order processing</h1>"
+    return render_template('processing.html')
 
 def complete_orders():
-    return "<h1>complete orders</h1>"
+    return render_template('completed.html')
 
 # register call back function upon visiting particular url
 routes = Blueprint("routes", __name__)

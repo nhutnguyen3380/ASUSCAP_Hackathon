@@ -1,0 +1,19 @@
+#content {
+    background-color: blanchedalmond;
+    z-index: 1;
+}
+html {
+    background-color: blanchedalmond;
+}
+
+h2 {
+    color: gray;
+}
+
+nav .navbar-nav li a {
+    color: white !important;
+}
+
+.navbar-green-custom {
+    background-color: #00704a;
+}
