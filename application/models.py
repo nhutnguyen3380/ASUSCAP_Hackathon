@@ -25,13 +25,15 @@ class User(db.Model):
 class Order(db.Model):
     ''' 
     Order entity
-    fields: id, user_id, items
+    fields: id, user_id, items, iscomplete
     '''
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    items = db.relationship('Item', backref="order", lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    items = db.relationship('Item', backref='order', lazy=True)
     iscomplete = db.Column(db.Boolean, default=False)
 
+    def __repr__(self):
+        return '<Order: id# %r complete?: %r>' % (self.id, self.iscomplete)
 
 class Item(db.Model):
     '''
@@ -39,5 +41,8 @@ class Item(db.Model):
     fields: id, order_id, text
     '''
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     text = db.Column(db.String(80), nullable=False)
+
+    def __repr__(self):
+        return '<Item: %r>' % (self.text)

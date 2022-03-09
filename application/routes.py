@@ -1,5 +1,6 @@
-from flask import request, render_template, redirect, Blueprint
+from flask import request, render_template, redirect, Blueprint, flash
 from models import User, Order, Item
+from app import db
 
 # NOTICE: FLASK follows a MVT (Model-View-Template) like Architectural Design Pattern
 # This file defines the Views (and routing):
@@ -17,11 +18,30 @@ def index():
 def creating_order():
     # a POST request sends a data payload to the server (usually on a form submission)
     if request.method == 'POST':
-        return "<h1>POST method triggered</h1>"
-    return "<p>create order</p>"
+        username = request.form['username']
+        #content = request.form['content']
+
+        if not username:
+            flash('Customer Name is Required is required!')
+        #elif not content:
+            #flash('Content is required!')
+        else:
+            #save item and redirect
+            associated_customer = User.query.filter_by(username=username).first()
+
+            new_order = Order(user_id=associated_customer.id)
+            an_item = Item(text="sample item", order_id=new_order.id)
+            db.session.add(new_order)
+            db.session.add(an_item)
+            db.session.commit()
+
+            return render_template('index.html', users=User.query.all())
+
+    return render_template('processing.html', orders=Order.query.filter(Order.iscomplete==False).all())
+
 
 def order_processing():
-    return render_template('processing.html')
+    return render_template('processing.html', orders=Order.query.filter(Order.iscomplete==False).all())
 
 def complete_orders():
     return render_template('completed.html')
@@ -29,6 +49,6 @@ def complete_orders():
 # register call back function upon visiting particular url
 routes = Blueprint("routes", __name__)
 routes.route('/')(index)
-routes.route("/create", methods=['GET','POST'])(creating_order)
+routes.route("/create", methods=['POST'])(creating_order)
 routes.route("/processing")(order_processing)
 routes.route("/complete")(complete_orders)
