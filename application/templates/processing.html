@@ -5,7 +5,9 @@
 {% for order in orders %}
 <div class="card shadow">
     <div class="card-body">
-        <h4 class="card-title">Order Number: {{order.id}}</h4>
+        <h4 class="card-title">
+            Customer: {{order.user_id }} Order Number: {{order.id}}
+        </h4>
         <p class="card-text">{{ order.items }}</p>
         <form method="POST" action="/confirm">
             <button

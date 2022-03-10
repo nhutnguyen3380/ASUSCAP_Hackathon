@@ -13,7 +13,7 @@ from app import db
 # define call back functions
 # when a particular URL is visited (see routes below), the following subscribed function will be called
 def index():
-    return render_template('index.html', users=User.query.all())
+    return render_template('index.html')
 
 def creating_order():
     # a POST request sends a data payload to the server (usually on a form submission)
@@ -34,7 +34,7 @@ def creating_order():
 
                
 
-                new_order = Order(user_id=associated_customer.id, items=items)
+                new_order = Order(user_id=associated_customer.username, items=items)
                 
                 db.session.add(new_order)
                 db.session.commit()
@@ -63,15 +63,15 @@ def complete_an_order():
             if not order:
                 flash('Order does not seem to exist!')
 
-            user = User.query.filter(User.id==order.user_id).first()
-            print(user.id)
+            user = User.query.filter(User.username==order.user_id).first()
+         
 
             if not user:
                 flash('Customer is not found for order!')
 
             if user.optedin == True:
                 #perform API call
-                print('API called here')
+                print('API should be called here')
 
             order.iscomplete = True
             db.session.add(order)

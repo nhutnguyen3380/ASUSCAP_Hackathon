@@ -12,10 +12,9 @@ db = SQLAlchemy()
 class User(db.Model):
     ''' 
     USER entity
-    fields: id, username, phonenumber, orders, optedin
+    fields: username (pk), phonenumber, orders, optedin
     '''
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), primary_key=True)
     phonenumber = db.Column(db.String(12), unique=True, nullable=False)
     orders = db.relationship('Order', backref='user', lazy=True)
     optedin = db.Column(db.Boolean, default=False)
@@ -29,7 +28,7 @@ class Order(db.Model):
     fields: id, user_id, items, iscomplete
     '''
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.String(80), db.ForeignKey('user.username'))
     items = db.Column(db.String(120), nullable=False)
     iscomplete = db.Column(db.Boolean, default=False)
 
