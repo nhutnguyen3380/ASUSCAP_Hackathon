@@ -1,6 +1,7 @@
 from flask import request, render_template, redirect, Blueprint, flash
 from models import User, Order
 from app import db
+from API.twilioAPI import client
 
 # NOTICE: FLASK follows a MVT (Model-View-Template) like Architectural Design Pattern
 # This file defines the Views (and routing):
@@ -33,7 +34,6 @@ def creating_order():
                 associated_customer = User.query.filter_by(username=username).first()
 
                
-
                 new_order = Order(user_id=associated_customer.username, items=items)
                 
                 db.session.add(new_order)
@@ -72,6 +72,16 @@ def complete_an_order():
             if user.optedin == True:
                 #perform API call
                 print('API should be called here')
+
+                testmessage = "Customer Name: " + user.username + "\n" + "Order: " + order.items;# order.items user.username
+                
+                message = client.messages \
+                .create(
+                     body=testmessage,
+                     from_='+14015922644',
+                     to=user.phonenumber
+                )
+                print(message.sid)
 
             order.iscomplete = True
             db.session.add(order)
