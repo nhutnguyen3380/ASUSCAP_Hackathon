@@ -1,5 +1,5 @@
 from flask import request, render_template, redirect, Blueprint, flash
-from models import User, Order, Item
+from models import User, Order
 from app import db
 
 # NOTICE: FLASK follows a MVT (Model-View-Template) like Architectural Design Pattern
@@ -18,26 +18,30 @@ def index():
 def creating_order():
     # a POST request sends a data payload to the server (usually on a form submission)
     if request.method == 'POST':
+        print('create')
+        print(request.form)
         username = request.form['username']
-        #content = request.form['content']
+        items = request.form['items']
 
         if not username:
             flash('Customer Name is Required is required!')
-        #elif not content:
-            #flash('Content is required!')
+        elif not items:
+            flash('Content is required!')
         else:
             #save item and redirect
             try:
                 associated_customer = User.query.filter_by(username=username).first()
 
-                new_order = Order(user_id=associated_customer.id)
-                an_item = Item(text="sample item", order_id=new_order.id)
+               
+
+                new_order = Order(user_id=associated_customer.id, items=items)
+                
                 db.session.add(new_order)
-                db.session.add(an_item)
                 db.session.commit()
-                return redirect('/')
+                return render_template('processing.html', orders=Order.query.filter(Order.iscomplete==False).all())
             except:
-                return 'There was an error for the order creation process'
+                flash('invalid customer name (Customer not in the system)')
+                return redirect('/')
     else:
         return render_template('processing.html', orders=Order.query.filter(Order.iscomplete==False).all())
 

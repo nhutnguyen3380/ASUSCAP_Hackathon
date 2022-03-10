@@ -1,6 +1,14 @@
 {% extends "layout.html" %} {% block content %}
-<h2 class="text-">Create An Order</h2>
-<form method="POST" action="/create">
+<h2>Create An Order</h2>
+<hr />
+{% with messages = get_flashed_messages() %} {% if messages %}
+<ul class="text-danger">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %} {% endwith %}
+<form id="orderform" method="POST" action="/create">
     <div class="form-group">
         <label for="username">Customer Name</label>
         <input
@@ -12,6 +20,16 @@
             placeholder="customer name"
         />
     </div>
-    <button type="submit">Submit</button>
+    <div class="form-group">
+        <label for="items">Order Items</label>
+        <textarea
+            form="orderform"
+            name="items"
+            class="form-control"
+            id="items"
+            rows="4"
+        ></textarea>
+    </div>
+    <button class="btn btn-lg btn-light" type="submit">Submit</button>
 </form>
 {% endblock %}

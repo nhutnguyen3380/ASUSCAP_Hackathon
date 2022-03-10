@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from models import db,User, Item, Order
+from models import db
 from routes import routes
 from flask_migrate import Migrate
 

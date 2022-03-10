@@ -1,4 +1,5 @@
 from flask_sqlalchemy import  SQLAlchemy
+from sqlalchemy import false
 # reference https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/#quickstart
 
 # This defines models to be used by an ORM (Object Relational Mapper)
@@ -29,20 +30,20 @@ class Order(db.Model):
     '''
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    items = db.relationship('Item', backref='order', lazy=True)
+    items = db.Column(db.String(120), nullable=False)
     iscomplete = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<Order: id# %r complete?: %r>' % (self.id, self.iscomplete)
 
-class Item(db.Model):
-    '''
-    Item Entity
-    fields: id, order_id, text
-    '''
-    id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
-    text = db.Column(db.String(80), nullable=False)
+# class Item(db.Model):
+#     '''
+#     Item Entity
+#     fields: id, order_id, text
+#     '''
+#     id = db.Column(db.Integer, primary_key=True)
+#     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+#     text = db.Column(db.String(80), nullable=False)
 
-    def __repr__(self):
-        return '<Item: %r>' % (self.text)
+#     def __repr__(self):
+#         return '<Item: %r>' % (self.text)

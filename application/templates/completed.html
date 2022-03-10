@@ -1,7 +1,12 @@
 {% extends "layout.html" %} {% block content %}
-<h2>Complete Orders</h2>
+<h2>Completed Orders</h2>
 <hr />
 <br />
 {% for order in complete_orders %}
-<h3>{{order.id}}</h3>
+<div class="card shadow">
+    <div class="card-body">
+        <h4 class="card-title">Order Number: {{order.id}}</h4>
+        <p class="card-text">{{ order.items }}</p>
+    </div>
+</div>
 {% endfor %} {% endblock %}
