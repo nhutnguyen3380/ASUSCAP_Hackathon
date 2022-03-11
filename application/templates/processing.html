@@ -9,16 +9,98 @@
             Customer: {{order.user_id }} Order Number: {{order.id}}
         </h4>
         <p class="card-text">{{ order.items }}</p>
-        <form method="POST" action="/confirm">
-            <button
-                name="Complete_Order"
-                class="btn btn-success ml-auto"
-                type="submit"
-                value="{{ order.id }}"
-            >
-                CompleteOrder
-            </button>
-        </form>
+
+        <button
+            name="Complete_Order"
+            class="btn btn-success ml-auto"
+            onclick="confirm({{order.id}})"
+        >
+            CompleteOrder
+        </button>
     </div>
 </div>
-{% endfor %} {% endblock %}
+{% endfor %}
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script>
+    URL = window.URL || window.webkitURL;
+
+    var gumStream; //stream from getUserMedia()
+    var rec; //Recorder.js object
+    var input; //MediaStreamAudioSourceNode we'll be recording
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+
+    // shim for AudioContext when it's not avb.
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    var audioContext; //audio context to help us record
+
+    //just send always to the backend
+    function confirm(val) {
+        fd.append("Complete_Order", val);
+        startRecording(val);
+    }
+
+    function startRecording(val) {
+        console.log("recordButton clicked for order" + val);
+
+        var constraints = { audio: true, video: false };
+
+        navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then(function (stream) {
+                console.log(
+                    "getUserMedia() success, stream created, initializing Recorder.js ..."
+                );
+
+                audioContext = new AudioContext();
+
+                /*  assign to gumStream for later use  */
+                gumStream = stream;
+
+                /* use the stream */
+                input = audioContext.createMediaStreamSource(stream);
+
+                rec = new Recorder(input, { numChannels: 1 });
+
+                //start the recording process
+                rec.record();
+
+                //stop the recording after 5 seconds
+                setTimeout((val) => stopRecording(val), 5000);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+    }
+
+    function stopRecording(val) {
+        //tell the recorder to stop the recording
+        rec.stop();
+
+        //stop microphone access
+        gumStream.getAudioTracks()[0].stop();
+
+        //create the wav blob and pass it on to createDownloadLink
+        rec.exportWAV(createDownloadLink);
+    }
+
+    function createDownloadLink(blob) {
+        //name of .wav file to use during upload and download (without extendion)
+        var filename = new Date().toISOString();
+
+        xhr.onload = function (e) {
+            if (this.readyState === 4) {
+                console.log("Server returned: ", e.target.responseText);
+                window.location.href = "/complete";
+            }
+        };
+
+        fd.append("audio_data", blob, filename);
+        xhr.open("POST", "/confirm", true);
+        xhr.send(fd);
+
+        fd.delete("audio_data");
+        fd.delete("Complete_Order");
+    }
+</script>
+{% endblock %}

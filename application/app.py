@@ -14,7 +14,7 @@ def init_app():
     #config app (DATABASE)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = True # Shows corresponding SQL queries
+    app.config['SQLALCHEMY_ECHO'] = False # Shows corresponding SQL queries
 
 
     # initialize app with the current database
