@@ -1,9 +1,9 @@
 {% extends "layout.html" %} {% block content %}
 <h2>Orders in Progress</h2>
-
+<div id="recordingIndicator" style="display: none">RECORDING</div>
 <hr />
 {% for order in orders %}
-<div class="card shadow">
+<div class="card shadow mt-4">
     <div class="card-body">
         <h4 class="card-title">
             Customer: {{order.user_id }} Order Number: {{order.id}}
@@ -42,7 +42,7 @@
 
     function startRecording(val) {
         console.log("recordButton clicked for order" + val);
-
+        showRecordingIndicator();
         var constraints = { audio: true, video: false };
 
         navigator.mediaDevices
@@ -82,6 +82,8 @@
 
         //create the wav blob and pass it on to createDownloadLink
         rec.exportWAV(createDownloadLink);
+        var x = document.getElementById("recordingIndicator");
+        x.style.display = "none";
     }
 
     function createDownloadLink(blob) {
@@ -101,6 +103,11 @@
 
         fd.delete("audio_data");
         fd.delete("Complete_Order");
+    }
+
+    function showRecordingIndicator() {
+        var x = document.getElementById("recordingIndicator");
+        x.style.display = "block";
     }
 </script>
 {% endblock %}

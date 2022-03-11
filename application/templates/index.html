@@ -8,28 +8,38 @@
     {% endfor %}
 </ul>
 {% endif %} {% endwith %}
-<form id="orderform" method="POST" action="/create">
-    <div class="form-group">
-        <label for="username">Customer Name</label>
-        <input
-            type="text"
-            class="form-control"
-            name="username"
-            id="username"
-            aria-describedby="helpId"
-            placeholder="customer name"
-        />
-    </div>
-    <div class="form-group">
-        <label for="items">Order Items</label>
-        <textarea
-            form="orderform"
-            name="items"
-            class="form-control"
-            id="items"
-            rows="4"
-        ></textarea>
-    </div>
-    <button class="btn btn-lg btn-light" type="submit">Submit</button>
-</form>
+<div class="card shadow">
+    <form
+        class="w-75 mx-auto my-4"
+        id="orderform"
+        method="POST"
+        action="/create"
+    >
+        <div class="form-group">
+            <label for="username">Customer Name</label>
+            <input
+                type="text"
+                class="form-control my-2"
+                name="username"
+                id="username"
+                aria-describedby="helpId"
+                placeholder="customer name"
+            />
+        </div>
+        <div class="form-group">
+            <label for="items">Order Items</label>
+            <textarea
+                form="orderform"
+                name="items"
+                class="form-control my-2"
+                placeholder="order items"
+                id="items"
+                rows="4"
+            ></textarea>
+        </div>
+        <button class="mt-4 mr-auto btn btn-lg btn-success" type="submit">
+            Place Order
+        </button>
+    </form>
+</div>
 {% endblock %}

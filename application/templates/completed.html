@@ -3,11 +3,10 @@
 <hr />
 <br />
 {% for order in complete_orders %}
-<div class="card shadow">
+<div class="card shadow mb-4">
     <div class="card-body">
-        <h4 class="card-title">
-            Customer: {{order.user_id }} Order Number: {{order.id}}
-        </h4>
+        <h4 class="card-title">Customer: {{order.user_id }}</h4>
+        <h5>Order Number: {{order.id}}</h5>
         <p class="card-text">{{ order.items }}</p>
     </div>
 </div>

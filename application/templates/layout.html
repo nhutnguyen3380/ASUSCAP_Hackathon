@@ -15,9 +15,14 @@
     </head>
     <body>
         {% include "navbar.html" %}
-        <div class="col-lg-8 my-4 mx-auto justify-content-center" id="content">
+        <div
+            class="col-lg-8 my-4 mx-auto justify-content-center"
+            id="content"
+            style="min-height: 50vh"
+        >
             {% block content %}{% endblock %}
         </div>
+        {% include "footer.html" %}
     </body>
     <script
         src="https://code.jquery.com/jquery-3.6.0.min.js"
